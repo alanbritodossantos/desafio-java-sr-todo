@@ -1,5 +1,8 @@
 package com.alanbrito.todoapi.application.service;
 
+import com.alanbrito.todoapi.application.event.TaskChangedEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import java.time.LocalDateTime;
 import com.alanbrito.todoapi.api.dto.CreateTaskRequest;
 import com.alanbrito.todoapi.api.dto.TaskResponse;
 import com.alanbrito.todoapi.api.dto.UpdateTaskRequest;
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public TaskResponse create(CreateTaskRequest request) {
         Task task = Task.builder()
@@ -25,6 +29,14 @@ public class TaskService {
                 .build();
 
         Task savedTask = taskRepository.save(task);
+
+        eventPublisher.publishEvent(new TaskChangedEvent(
+                savedTask.getId(),
+                savedTask.getTitle(),
+                savedTask.getStatus(),
+                "CREATED",
+                LocalDateTime.now()
+        ));
 
         return TaskResponse.from(savedTask);
     }
@@ -45,6 +57,14 @@ public class TaskService {
         task.setStatus(request.status());
 
         Task updatedTask = taskRepository.save(task);
+
+        eventPublisher.publishEvent(new TaskChangedEvent(
+                updatedTask.getId(),
+                updatedTask.getTitle(),
+                updatedTask.getStatus(),
+                "UPDATED",
+                LocalDateTime.now()
+        ));
 
         return TaskResponse.from(updatedTask);
     }
