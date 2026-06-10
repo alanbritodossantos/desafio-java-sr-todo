@@ -1,0 +1,38 @@
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.task-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.task-form input {
+  flex: 1;
+  padding: 10px;
+}
+
+.task-form button {
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.task-card p {
+  margin: 8px 0;
+}
